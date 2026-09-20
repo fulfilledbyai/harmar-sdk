@@ -9,6 +9,7 @@ mid-sentence; 50+ other languages served through the same endpoint.
 ```bash
 export HARMAR_API_KEY=hk_live_…          # https://harmar.ai/app/api — 10 free minutes
 npx -y harmar transcribe video.mp4 --lang auto --srt --out video.srt
+# (straight from GitHub: npx -y github:fulfilledbyai/harmar-sdk transcribe …)
 
 # a captioned video in a saved style
 npx -y harmar save-style "Brand" --style '{"preset":"pill","font":"montserrat","accentColor":"#D4F25A"}'
