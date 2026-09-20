@@ -1,4 +1,4 @@
-# harmar
+# harmar-ai
 
 Command line, MCP server and typed client for the [Harmar](https://harmar.ai)
 subtitle API: word-timed transcripts, SRT/VTT, and **captioned videos** —
@@ -8,12 +8,11 @@ mid-sentence; 50+ other languages served through the same endpoint.
 
 ```bash
 export HARMAR_API_KEY=hk_live_…          # https://harmar.ai/app/api — 10 free minutes
-npx -y harmar transcribe video.mp4 --lang auto --srt --out video.srt
-# (straight from GitHub: npx -y github:fulfilledbyai/harmar-sdk transcribe …)
+npx -y harmar-ai transcribe video.mp4 --lang auto --srt --out video.srt
 
 # a captioned video in a saved style
-npx -y harmar save-style "Brand" --style '{"preset":"pill","font":"montserrat","accentColor":"#D4F25A"}'
-npx -y harmar transcribe reel.mp4 --lang auto --export --preset <id> --out reel-captioned.mp4
+npx -y harmar-ai save-style "Brand" --style '{"preset":"pill","font":"montserrat","accentColor":"#D4F25A"}'
+npx -y harmar-ai transcribe reel.mp4 --lang auto --export --preset <id> --out reel-captioned.mp4
 ```
 
 ## CLI
@@ -43,7 +42,7 @@ error code — `insufficient_credits` carries `seconds_needed`), `2` usage,
 ## MCP server — Claude Code, Claude Desktop, Cursor, Windsurf
 
 ```bash
-claude mcp add harmar -e HARMAR_API_KEY=hk_live_… -- npx -y harmar mcp
+claude mcp add harmar -e HARMAR_API_KEY=hk_live_… -- npx -y harmar-ai mcp
 ```
 
 or in any `mcp.json`:
@@ -53,7 +52,7 @@ or in any `mcp.json`:
   "mcpServers": {
     "harmar": {
       "command": "npx",
-      "args": ["-y", "harmar", "mcp"],
+      "args": ["-y", "harmar-ai", "mcp"],
       "env": { "HARMAR_API_KEY": "hk_live_…" }
     }
   }
@@ -77,7 +76,7 @@ your agent's skills directory.
 ## Library
 
 ```ts
-import { HarmarClient } from "harmar";
+import { HarmarClient } from "harmar-ai";
 
 const harmar = new HarmarClient(); // reads HARMAR_API_KEY
 const t = await harmar.transcribe("talk.mp4", { sourceLang: "auto", translateTo: "en", keepMedia: true });

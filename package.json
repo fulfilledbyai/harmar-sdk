@@ -1,7 +1,7 @@
 {
-  "name": "harmar",
+  "name": "harmar-ai",
   "version": "0.1.0",
-  "description": "Harmar subtitle API for agents and scripts — CLI, MCP server and typed client. Word-timed transcripts and SRT/VTT for Armenian, Russian, English and 50+ more languages, code-switching included.",
+  "description": "Harmar subtitle API for agents and scripts — CLI, MCP server and typed client. Word-timed transcripts, SRT/VTT and styled captioned videos for Armenian, Russian, English and 50+ more languages, code-switching included.",
   "license": "MIT",
   "type": "module",
   "engines": { "node": ">=20" },

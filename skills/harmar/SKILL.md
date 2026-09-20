@@ -16,7 +16,7 @@ refunded on failure. 10 free minutes on the first API key.
 
 1. Key: https://harmar.ai/app/api → create an API key (`hk_live_…`).
 2. `export HARMAR_API_KEY=hk_live_…`
-3. The CLI runs without install: `npx -y harmar <command>`.
+3. The CLI runs without install: `npx -y harmar-ai <command>`.
 
 If `HARMAR_API_KEY` is unset, stop and ask the user for it — do not guess.
 
@@ -24,21 +24,21 @@ If `HARMAR_API_KEY` is unset, stop and ask the user for it — do not guess.
 
 ```bash
 # Armenian speech (the default) → JSON with text, segments and every word's start/end
-npx -y harmar transcribe video.mp4
+npx -y harmar-ai transcribe video.mp4
 
 # Don't know the language? Let it identify the language from the audio.
-npx -y harmar transcribe video.mp4 --lang auto --srt --out video.srt
+npx -y harmar-ai transcribe video.mp4 --lang auto --srt --out video.srt
 
 # Russian speech, plus an Armenian subtitle track (translation is free)
-npx -y harmar transcribe talk.mp4 --lang ru --translate-to hy --vtt --out talk.hy.vtt
+npx -y harmar-ai transcribe talk.mp4 --lang ru --translate-to hy --vtt --out talk.hy.vtt
 
 # Long file: submit, then poll
-npx -y harmar transcribe long.mp4 --no-wait        # prints {"id": …}
-npx -y harmar status <id>                          # progress 0–100, then the transcript
-npx -y harmar srt <id> --out long.srt
+npx -y harmar-ai transcribe long.mp4 --no-wait        # prints {"id": …}
+npx -y harmar-ai status <id>                          # progress 0–100, then the transcript
+npx -y harmar-ai srt <id> --out long.srt
 
-npx -y harmar languages     # what --lang / --translate-to accept, live
-npx -y harmar balance       # minutes left
+npx -y harmar-ai languages     # what --lang / --translate-to accept, live
+npx -y harmar-ai balance       # minutes left
 ```
 
 `--lang` takes an ISO code (`hy`, `ru`, `en`, `kk`, `ka`, `uk`, …) or `auto`.
@@ -53,21 +53,21 @@ moment the transcript exists.
 
 ```bash
 # 1. see what a style can be: presets, fonts + the languages each renders, fields
-npx -y harmar styles
+npx -y harmar-ai styles
 
 # 2. save the look once, by name — then every export uses exactly it
-npx -y harmar save-style "Brand" --style '{"preset":"pill","font":"montserrat","accentColor":"#D4F25A","bgOpacity":0.6,"posY":78}'
+npx -y harmar-ai save-style "Brand" --style '{"preset":"pill","font":"montserrat","accentColor":"#D4F25A","bgOpacity":0.6,"posY":78}'
 #    → prints the preset id
 
 # 3a. one shot: transcribe + export
-npx -y harmar transcribe reel.mp4 --lang auto --export --preset <preset id> --out reel-captioned.mp4
+npx -y harmar-ai transcribe reel.mp4 --lang auto --export --preset <preset id> --out reel-captioned.mp4
 
 # 3b. or export an existing transcript (made with --keep-media)
-npx -y harmar export <id> --preset <preset id> --out reel-captioned.mp4
-npx -y harmar export <id> --style-file brand.json --track en --platform instagram --out out.mp4
+npx -y harmar-ai export <id> --preset <preset id> --out reel-captioned.mp4
+npx -y harmar-ai export <id> --style-file brand.json --track en --platform instagram --out out.mp4
 
-npx -y harmar presets            # saved styles
-npx -y harmar export-status <id> # queued / rendering N% / completed (download_url) / failed
+npx -y harmar-ai presets            # saved styles
+npx -y harmar-ai export-status <id> # queued / rendering N% / completed (download_url) / failed
 ```
 
 Rules the agent should follow:

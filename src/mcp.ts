@@ -4,7 +4,7 @@
 // the Harmar subtitle API as tools. One process per host, authenticated
 // by HARMAR_API_KEY in its environment:
 //
-//   claude mcp add harmar -e HARMAR_API_KEY=hk_live_… -- npx -y harmar mcp
+//   claude mcp add harmar -e HARMAR_API_KEY=hk_live_… -- npx -y harmar-ai mcp
 //
 // Every tool is a thin wrapper over HarmarClient — the MCP layer adds
 // schemas and text rendering, never logic.
