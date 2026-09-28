@@ -21,7 +21,7 @@ import { HarmarClient, HarmarError, type ProgressEvent, type Transcript } from "
 const USAGE = `harmar — Harmar subtitle API (https://harmar.ai/developers)
 
 Usage
-  harmar transcribe <file> [options]   upload, transcribe, print the result
+  harmar transcribe <file|url> [options]  upload (or send a public link), transcribe, print
   harmar status <id>                   job status / full transcript as JSON
   harmar srt <id> [--lang xx]          SRT for a finished job
   harmar vtt <id> [--lang xx]          VTT for a finished job
@@ -162,7 +162,7 @@ async function main(argv: string[]): Promise<number> {
 
   switch (cmd) {
     case "transcribe": {
-      if (!arg) return usageError("transcribe needs a file path");
+      if (!arg) return usageError("transcribe needs a file path or an https:// link");
       const format = flags.srt ? "srt" : flags.vtt ? "vtt" : flags.text ? "text" : "json";
       const timeoutMs = flags.timeout ? Number(flags.timeout) * 1000 : undefined;
       if (flags.timeout && !(Number(flags.timeout) > 0)) return usageError("--timeout must be a positive number of seconds");

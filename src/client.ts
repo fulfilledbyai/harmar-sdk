@@ -254,15 +254,16 @@ export class HarmarClient {
   }
 
   submit(mediaId: string, opts: SubmitOptions = {}): Promise<SubmitResult> {
-    return this.request("POST", "/v1/transcripts", {
-      media_id: mediaId,
-      ...(opts.sourceLang ? { source_lang: opts.sourceLang } : {}),
-      ...(opts.translateTo ? { translate_to: opts.translateTo } : {}),
-      ...(opts.scriptText ? { script_text: opts.scriptText } : {}),
-      ...(opts.webhookUrl ? { webhook_url: opts.webhookUrl } : {}),
-      ...(opts.keepMedia ? { keep_media: true } : {}),
-      ...(opts.options ? { options: opts.options } : {}),
-    });
+    return this.request("POST", "/v1/transcripts", { media_id: mediaId, ...submitBody(opts) });
+  }
+
+  /**
+   * Submit a public link instead of uploading: a direct file URL, or a
+   * Google Drive / Dropbox share link ("anyone with the link"). The server
+   * downloads it (≤2 GB). Social-media page links are refused.
+   */
+  submitUrl(mediaUrl: string, opts: SubmitOptions = {}): Promise<SubmitResult> {
+    return this.request("POST", "/v1/transcripts", { media_url: mediaUrl, ...submitBody(opts) });
   }
 
   // ── styles & export ──────────────────────────────────────────────────
@@ -421,14 +422,23 @@ export class HarmarClient {
     return last;
   }
 
-  /** Upload, submit and (by default) wait. The whole flow in one call. */
+  /**
+   * Upload, submit and (by default) wait. The whole flow in one call.
+   * An http(s) URL instead of a path is submitted as media_url — nothing
+   * is uploaded from this machine.
+   */
   async transcribe(
-    filePath: string,
+    fileOrUrl: string,
     opts: SubmitOptions & { wait?: boolean; timeoutMs?: number; onProgress?: (e: ProgressEvent) => void } = {},
   ): Promise<Transcript> {
     const { wait = true, timeoutMs, onProgress, ...submitOpts } = opts;
-    const ticket = await this.upload(filePath, onProgress);
-    const submitted = await this.submit(ticket.media_id, submitOpts);
+    let submitted: SubmitResult;
+    if (/^https?:\/\//i.test(fileOrUrl)) {
+      submitted = await this.submitUrl(fileOrUrl, submitOpts);
+    } else {
+      const ticket = await this.upload(fileOrUrl, onProgress);
+      submitted = await this.submit(ticket.media_id, submitOpts);
+    }
     onProgress?.({
       phase: "submitted",
       id: submitted.id,
@@ -494,4 +504,15 @@ function errorFrom(status: number, json: unknown, text: string): HarmarError {
     );
   }
   return new HarmarError(status, "http_error", text.slice(0, 200) || `HTTP ${status}`);
+}
+
+function submitBody(opts: SubmitOptions): Record<string, unknown> {
+  return {
+    ...(opts.sourceLang ? { source_lang: opts.sourceLang } : {}),
+    ...(opts.translateTo ? { translate_to: opts.translateTo } : {}),
+    ...(opts.scriptText ? { script_text: opts.scriptText } : {}),
+    ...(opts.webhookUrl ? { webhook_url: opts.webhookUrl } : {}),
+    ...(opts.keepMedia ? { keep_media: true } : {}),
+    ...(opts.options ? { options: opts.options } : {}),
+  };
 }

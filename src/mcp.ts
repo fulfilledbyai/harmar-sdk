@@ -72,12 +72,16 @@ server.registerTool(
   {
     title: "Transcribe a media file",
     description:
-      "Upload a local audio/video file (MP4, MOV, WebM, M4A, MP3, WAV; ≤60 min) to Harmar and get a word-timed transcript. " +
+      "Upload a local audio/video file (MP4, MOV, WebM, M4A, MP3, WAV; ≤60 min) to Harmar — or give a public link to one — and get a word-timed transcript. " +
       "Best for Armenian and mixed Armenian/Russian/English speech; 50+ other languages supported (see harmar_languages). " +
       "Charged per second of media from a prepaid balance, refunded if the job fails. " +
       "Waits for completion by default; if it times out the job keeps running — poll with harmar_get_transcript.",
     inputSchema: {
-      file_path: z.string().describe("Absolute path to the media file on this machine."),
+      file_path: z.string().optional().describe("Absolute path to the media file on this machine."),
+      url: z
+        .string()
+        .optional()
+        .describe("Instead of file_path: a public link to the file — a direct file URL, or a Google Drive / Dropbox share link ('anyone with the link'). Instagram/TikTok/YouTube pages do not work."),
       source_lang: z
         .string()
         .optional()
@@ -97,7 +101,11 @@ server.registerTool(
   },
   async (a) =>
     guarded(async () => {
-      const result = await client().transcribe(a.file_path, {
+      const source = a.url ?? a.file_path;
+      if (!source || (a.url && a.file_path)) {
+        throw new Error("Pass exactly one of file_path or url.");
+      }
+      const result = await client().transcribe(source, {
         sourceLang: a.source_lang,
         translateTo: a.translate_to,
         scriptText: a.script_text,
