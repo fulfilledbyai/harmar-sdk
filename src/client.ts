@@ -484,7 +484,7 @@ export class HarmarClient {
       method,
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
-        "User-Agent": "harmar-sdk/0.1.0",
+        "User-Agent": "harmar-sdk/0.2.0",
         ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,

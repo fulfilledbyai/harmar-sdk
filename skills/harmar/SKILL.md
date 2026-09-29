@@ -29,6 +29,11 @@ npx -y harmar-ai transcribe video.mp4
 # Don't know the language? Let it identify the language from the audio.
 npx -y harmar-ai transcribe video.mp4 --lang auto --srt --out video.srt
 
+# a public link instead of a local file (direct URL, or a Google Drive / Dropbox
+# share link set to "anyone with the link"; up to 2 GB). Instagram / TikTok /
+# YouTube page links do not work — download the file first.
+npx -y harmar-ai transcribe https://example.com/talk.mp4 --lang auto --srt --out talk.srt
+
 # Russian speech, plus an Armenian subtitle track (translation is free)
 npx -y harmar-ai transcribe talk.mp4 --lang ru --translate-to hy --vtt --out talk.hy.vtt
 

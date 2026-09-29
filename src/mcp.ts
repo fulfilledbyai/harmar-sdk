@@ -14,7 +14,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import { HarmarClient, HarmarError, type Transcript } from "./client.js";
 
-const server = new McpServer({ name: "harmar", version: "0.1.0" });
+const server = new McpServer({ name: "harmar", version: "0.2.0" });
 
 let clientInstance: HarmarClient | null = null;
 function client(): HarmarClient {
